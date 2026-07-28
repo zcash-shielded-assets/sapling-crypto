@@ -266,9 +266,9 @@ impl Domain for SaplingDomain {
     fn parse_note_plaintext_without_memo_ivk(
         &self,
         ivk: &Self::IncomingViewingKey,
-        plaintext: &Self::CompactNotePlaintextBytes,
+        plaintext: &[u8],
     ) -> Option<(Self::Note, Self::Recipient)> {
-        sapling_parse_note_plaintext_without_memo(self, plaintext.as_ref(), |diversifier| {
+        sapling_parse_note_plaintext_without_memo(self, plaintext, |diversifier| {
             DiversifiedTransmissionKey::derive(ivk, diversifier)
         })
     }
@@ -276,9 +276,9 @@ impl Domain for SaplingDomain {
     fn parse_note_plaintext_without_memo_ovk(
         &self,
         pk_d: &Self::DiversifiedTransmissionKey,
-        plaintext: &Self::CompactNotePlaintextBytes,
+        plaintext: &[u8],
     ) -> Option<(Self::Note, Self::Recipient)> {
-        sapling_parse_note_plaintext_without_memo(self, plaintext.as_ref(), |diversifier| {
+        sapling_parse_note_plaintext_without_memo(self, plaintext, |diversifier| {
             diversifier.g_d().map(|_| *pk_d)
         })
     }
